@@ -72,6 +72,7 @@ def load_and_process_data():
 
         df['Capital Adequacy Ratio'] = (df['Equity Capital Q1-2025'] / df['Assets Q1-2025'] * 100).fillna(0)
         df['Asset Growth'] = ((df['Assets Q1-2025'] - df['Assets Q1-2024']) / df['Assets Q1-2024'] * 100).fillna(0)
+        df['Deposit Growth'] = ((df['Deposits Q1 - 2025'] - df['Deposits Q1-2024']) / df['Deposits Q1-2024'] * 100).fillna(0)
         df['Delinquency Ratio'] = ((df['Unbacked Non-Current Loans Q1 2025'] + df['Real Estate Owned Q1 2025']) / df['Assets Q1-2025'] * 100).fillna(0)
         df['Assets per Employee'] = (df['Assets Q1-2025'] / df['Employees']).fillna(0)
 
@@ -153,10 +154,14 @@ if not df.empty:
 
                 if not peer_group.empty:
                     st.markdown(f"#### Comparison with Peer Group ({len(peer_group)} CUs)")
-                    metrics_to_compare_list = ['Health Score', 'Capital Adequacy Ratio', 'Asset Growth', 'Loan Growth', 'Return on Assets - YTD', 'Return on Equity - YTD', 'Delinquency Ratio', 'Loan to Share Ratio', 'Loan to Asset Ratio', 'Provision for Loan Loss Ratio']
+                    metrics_to_compare_list = [
+                        'Health Score', 'Capital Adequacy Ratio', 'Asset Growth', 'Loan Growth', 'Deposit Growth',
+                        'Return on Assets - YTD', 'Return on Equity - YTD', 'Delinquency Ratio', 
+                        'Loan to Share Ratio', 'Loan to Asset Ratio', 'Provision for Loan Loss Ratio'
+                    ]
                     peer_avg = peer_group[metrics_to_compare_list].mean()
                     
-                    row1_cols = st.columns(5)
+                    row1_cols = st.columns(6)
                     row2_cols = st.columns(5)
                     
                     def create_comparison_chart(metric_name, col, data, peer_data, fmt):
@@ -172,7 +177,8 @@ if not df.empty:
                     create_comparison_chart("Capital Adequacy", row1_cols[1], cu_data['Capital Adequacy Ratio'], peer_avg['Capital Adequacy Ratio'], ".2f")
                     create_comparison_chart("Asset Growth", row1_cols[2], cu_data['Asset Growth'], peer_avg['Asset Growth'], ".2f")
                     create_comparison_chart("Loan Growth", row1_cols[3], cu_data['Loan Growth'], peer_avg['Loan Growth'], ".2f")
-                    create_comparison_chart("ROA", row1_cols[4], cu_data['Return on Assets - YTD'], peer_avg['Return on Assets - YTD'], ".2f")
+                    create_comparison_chart("Deposit Growth", row1_cols[4], cu_data['Deposit Growth'], peer_avg['Deposit Growth'], ".2f")
+                    create_comparison_chart("ROA", row1_cols[5], cu_data['Return on Assets - YTD'], peer_avg['Return on Assets - YTD'], ".2f")
                     
                     create_comparison_chart("ROE", row2_cols[0], cu_data['Return on Equity - YTD'], peer_avg['Return on Equity - YTD'], ".2f")
                     create_comparison_chart("Delinquency", row2_cols[1], cu_data['Delinquency Ratio'], peer_avg['Delinquency Ratio'], ".2f")
@@ -211,8 +217,9 @@ if not df.empty:
                 with proj_col1:
                     proj_assets = st.number_input("Total Assets ($)", value=current_data['Assets Q1-2025'], format="%d")
                     proj_loans = st.number_input("Total Loans ($)", value=current_data['Loans Q1 - 2025'], format="%d")
-                    proj_equity = st.number_input("Equity Capital ($)", value=current_data['Equity Capital Q1-2025'], format="%d")
+                    proj_deposits = st.number_input("Total Deposits ($)", value=current_data['Deposits Q1 - 2025'], format="%d")
                 with proj_col2:
+                    proj_equity = st.number_input("Equity Capital ($)", value=current_data['Equity Capital Q1-2025'], format="%d")
                     proj_unbacked_loans = st.number_input("Unbacked Non-Current Loans ($)", value=current_data['Unbacked Non-Current Loans Q1 2025'], format="%d")
                     proj_reo = st.number_input("Real Estate Owned ($)", value=current_data['Real Estate Owned Q1 2025'], format="%d")
                 with proj_col3:
@@ -223,6 +230,7 @@ if not df.empty:
                     'Capital Adequacy Ratio': (proj_equity / proj_assets * 100) if proj_assets else 0,
                     'Asset Growth': ((proj_assets - current_data['Assets Q1-2025']) / current_data['Assets Q1-2025'] * 100) if current_data['Assets Q1-2025'] else 0,
                     'Loan Growth': ((proj_loans - current_data['Loans Q1 - 2025']) / current_data['Loans Q1 - 2025'] * 100) if current_data['Loans Q1 - 2025'] else 0,
+                    'Deposit Growth': ((proj_deposits - current_data['Deposits Q1 - 2025']) / current_data['Deposits Q1 - 2025'] * 100) if current_data['Deposits Q1 - 2025'] else 0,
                     'Delinquency Ratio': ((proj_unbacked_loans + proj_reo) / proj_assets * 100) if proj_assets else 0,
                     'Return on Assets - YTD': proj_roa,
                     'Assets per Employee': (proj_assets / proj_employees) if proj_employees else 0
@@ -263,6 +271,8 @@ if not df.empty:
         **Asset Growth (%):** The year-over-year percentage increase in total assets. **3% - 8%** is a healthy rate.
         
         **Loan Growth (%):** The year-over-year percentage increase in total loans. **4% - 10%** is a healthy and sustainable range.
+        
+        **Deposit Growth (%):** The year-over-year percentage increase in total deposits/shares. **3% - 8%** is a healthy rate.
         
         **Loan to Share Ratio (%):** Shows how effectively deposits are being lent out. **Above 80%** is typically strong.
         
