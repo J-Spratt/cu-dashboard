@@ -201,18 +201,17 @@ if not df.empty:
                     
                     st.markdown("---")
                     st.subheader("Metric Definitions")
-                    def_col1, def_col2, def_col3 = st.columns(3)
+                    def_col1, def_col2 = st.columns(2)
                     with def_col1:
-                        st.markdown("**Health Score:** A proprietary score for a quick view of overall health.")
+                        st.markdown("**Health Score:** A proprietary score for a quick view of overall health. *(See the 'Guide & Definitions' tab for a full breakdown)*")
                         st.markdown("**Capital Adequacy:** Measures financial strength. Benchmark: >7%")
                         st.markdown("**Asset Growth:** Year-over-year % increase in assets. Benchmark: 3-8%")
                         st.markdown("**Loan Growth:** Year-over-year % increase in loans. Benchmark: 4-10%")
-                    with def_col2:
                         st.markdown("**Deposit Growth:** Year-over-year % increase in deposits. Benchmark: 3-8%")
+                    with def_col2:
                         st.markdown("**ROA:** Profitability indicator. Benchmark: >1%")
                         st.markdown("**ROE:** Return for member-owners. Benchmark: >10%")
                         st.markdown("**Delinquency Ratio:** % of past-due loans. Benchmark: <1.25%")
-                    with def_col3:
                         st.markdown("**Loan/Share Ratio:** How effectively deposits are lent. Benchmark: >80%")
                         st.markdown("**Loan/Asset Ratio:** Proportion of assets that are loans. Benchmark: >65%")
                         st.markdown("**PLL Ratio:** Amount set aside for loan losses. Should be near Delinquency Ratio.")
@@ -276,7 +275,11 @@ if not df.empty:
         
         ### Core Health & Profitability
         
-        **Health Score (0-100):** A proprietary score for a quick, holistic view of a credit union's overall health.
+        **Health Score (0-100):** A proprietary score for a quick, holistic view of a credit union's overall health. It's a weighted average of:
+        - **Capital Adequacy (35%):** Measures financial strength.
+        - **Asset Growth (25%):** Reflects ability to attract new members/deposits.
+        - **Return on Assets (25%):** A key profitability indicator.
+        - **Delinquency (15%):** Measures loan portfolio quality.
         
         **Capital Adequacy Ratio (%):** Measures financial strength. A ratio of **7%** is considered "well-capitalized" by the NCUA.
         
