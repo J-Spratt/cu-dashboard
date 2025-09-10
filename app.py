@@ -198,6 +198,25 @@ if not df.empty:
                             </div>
                         </div>
                     """, unsafe_allow_html=True)
+                    
+                    st.markdown("---")
+                    st.subheader("Metric Definitions")
+                    def_col1, def_col2, def_col3 = st.columns(3)
+                    with def_col1:
+                        st.markdown("**Health Score:** A proprietary score for a quick view of overall health.")
+                        st.markdown("**Capital Adequacy:** Measures financial strength. Benchmark: >7%")
+                        st.markdown("**Asset Growth:** Year-over-year % increase in assets. Benchmark: 3-8%")
+                        st.markdown("**Loan Growth:** Year-over-year % increase in loans. Benchmark: 4-10%")
+                    with def_col2:
+                        st.markdown("**Deposit Growth:** Year-over-year % increase in deposits. Benchmark: 3-8%")
+                        st.markdown("**ROA:** Profitability indicator. Benchmark: >1%")
+                        st.markdown("**ROE:** Return for member-owners. Benchmark: >10%")
+                        st.markdown("**Delinquency Ratio:** % of past-due loans. Benchmark: <1.25%")
+                    with def_col3:
+                        st.markdown("**Loan/Share Ratio:** How effectively deposits are lent. Benchmark: >80%")
+                        st.markdown("**Loan/Asset Ratio:** Proportion of assets that are loans. Benchmark: >65%")
+                        st.markdown("**PLL Ratio:** Amount set aside for loan losses. Should be near Delinquency Ratio.")
+
                 else:
                     st.warning("No other credit unions found in the selected asset range to form a peer group.")
         else:
