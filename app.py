@@ -1124,8 +1124,27 @@ def main():
             """)
         
         st.markdown("---")
-        st.info("**Tip**: Use the scenario advisor to test strategic decisions before implementation")
-        st.warning("**Disclaimer**: This dashboard provides analytical insights only. Always consult with financial professionals for decision-making.")
+        st.markdown("""
+            <div style='background: rgba(99,102,241,0.05); padding: 1.5rem; border-radius: 12px; 
+                        border: 1px solid rgba(99,102,241,0.2);'>
+                <p style='color: #e2e8f0; margin: 0; font-size: 0.95rem;'>
+                    <strong>Professional Tip:</strong> Leverage the scenario planning module to model strategic 
+                    decisions before implementation. This platform provides institutional-grade analytics 
+                    for data-driven decision making.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+            <div style='background: rgba(245,158,11,0.05); padding: 1.5rem; border-radius: 12px; 
+                        border: 1px solid rgba(245,158,11,0.2); margin-top: 1rem;'>
+                <p style='color: #e2e8f0; margin: 0; font-size: 0.9rem;'>
+                    <strong>Legal Disclaimer:</strong> This analytical platform provides data-driven insights 
+                    for informational purposes only. All strategic decisions should be validated with 
+                    qualified financial professionals and regulatory compliance officers.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
