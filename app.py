@@ -818,41 +818,16 @@ def main():
                 
                 # Recommendations
                 st.markdown("---")
-                st.subheader("🎯 Strategic Recommendations")
+                st.subheader("Strategic Recommendations")
                 
                 recommendations = generate_recommendations(current_data, projected)
                 
                 for rec, severity in recommendations:
                     severity_class = f"recommendation-{severity}"
-                    icon = {"critical": "🔴", "warning": "🟡", "info": "🔵", "success": "🟢"}.get(severity, "🔵")
                     st.markdown(
-                        f"<div class='recommendation {severity_class}'>{icon} {rec}</div>",
+                        f"<div class='recommendation {severity_class}'>{rec}</div>",
                         unsafe_allow_html=True
                     )
-                
-                # What-if scenarios
-                st.markdown("---")
-                st.subheader("💡 Quick What-If Scenarios")
-                
-                scenario_type = st.selectbox(
-                    "Select a scenario to explore",
-                    ["Custom", "10% Asset Growth", "Improve Capital Position", 
-                     "Reduce Delinquency", "Efficiency Drive"]
-                )
-                
-                if st.button("Apply Scenario"):
-                    if scenario_type == "10% Asset Growth":
-                        proj_assets = current_data['Assets Q1-2025'] * 1.1
-                        st.rerun()
-                    elif scenario_type == "Improve Capital Position":
-                        proj_equity = current_data['Equity Capital Q1-2025'] * 1.15
-                        st.rerun()
-                    elif scenario_type == "Reduce Delinquency":
-                        proj_unbacked_loans = current_data['Unbacked Non-Current Loans Q1 2025'] * 0.7
-                        st.rerun()
-                    elif scenario_type == "Efficiency Drive":
-                        proj_employees = int(current_data['Employees'] * 0.9)
-                        st.rerun()
         else:
             st.info("Please select credit unions from the Dashboard tab to use the Scenario Advisor.")
     
