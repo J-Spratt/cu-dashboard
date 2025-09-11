@@ -1149,8 +1149,8 @@ def main():
             """)
         
         st.markdown("---")
-        st.info("💡 **Tip**: Use the scenario advisor to test strategic decisions before implementation")
-        st.warning("⚠️ **Disclaimer**: This dashboard provides analytical insights only. Always consult with financial professionals for decision-making.")
+        st.info("**Tip**: Use the scenario advisor to test strategic decisions before implementation")
+        st.warning("**Disclaimer**: This dashboard provides analytical insights only. Always consult with financial professionals for decision-making.")
 
 if __name__ == "__main__":
     main()
