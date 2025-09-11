@@ -406,33 +406,33 @@ def display_key_metrics(df: pd.DataFrame):
     with col1:
         avg_health = df['Health Score'].mean()
         st.metric("Avg Health Score", f"{avg_health:.0f}", 
-                 delta=None, help="Average health score across all filtered CUs")
+                  delta=None, help="Average health score across all filtered CUs")
     
     with col2:
         total_assets = df['Assets Q1-2025'].sum()
         st.metric("Total Assets", f"${total_assets/1e9:.1f}B",
-                 help="Combined assets of filtered CUs")
+                  help="Combined assets of filtered CUs")
     
     with col3:
         avg_roa = df['Return on Assets - YTD'].mean()
         st.metric("Avg ROA", f"{avg_roa:.2f}%",
-                 help="Average Return on Assets")
+                  help="Average Return on Assets")
     
     with col4:
         avg_cap_ratio = df['Capital Adequacy Ratio'].mean()
         st.metric("Avg Capital Ratio", f"{avg_cap_ratio:.1f}%",
-                 help="Average Capital Adequacy Ratio")
+                  help="Average Capital Adequacy Ratio")
     
     with col5:
         at_risk = len(df[df['Risk Category'].isin(['Needs Attention', 'Critical'])])
         st.metric("CUs At Risk", at_risk,
-                 help="Number of CUs needing attention or in critical condition")
+                  help="Number of CUs needing attention or in critical condition")
 
 # --- Main Application ---
 def main():
     apply_custom_styling()
     
-    st.title("📊 Credit Union Performance Dashboard")
+    st.title("Credit Union Performance Dashboard")
     st.markdown("*Real-time analysis and scenario planning for credit union performance*")
     
     # Load data
@@ -443,11 +443,11 @@ def main():
     
     # Sidebar filters
     with st.sidebar:
-        st.header("🔍 Global Filters")
+        st.header("Global Filters")
         
         # Search functionality
         search_name = st.text_input("Search Credit Union Name", 
-                                   placeholder="Enter CU name...")
+                                      placeholder="Enter CU name...")
         
         # Asset range filter
         st.subheader("Asset Range")
@@ -457,9 +457,9 @@ def main():
         
         col1, col2 = st.columns(2)
         min_assets = col1.number_input("Min ($)", value=0, 
-                                      step=1_000_000, format="%d")
+                                       step=1_000_000, format="%d")
         max_assets = col2.number_input("Max ($)", value=int(max_asset_val), 
-                                      step=1_000_000, format="%d")
+                                       step=1_000_000, format="%d")
         
         # Risk category filter
         st.subheader("Risk Category")
@@ -482,11 +482,11 @@ def main():
             ]
         
         st.markdown("---")
-        st.info(f"📊 Showing {len(filtered_df)} of {len(df)} CUs")
+        st.info(f"Showing {len(filtered_df)} of {len(df)} CUs")
     
     # Main content tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["📈 Dashboard", "🔮 Scenario Advisor", 
-                                      "📊 Analytics", "📚 Guide"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Dashboard", "Scenario Advisor", 
+                                      "Analytics", "Guide"])
     
     with tab1:
         if not filtered_df.empty:
@@ -502,13 +502,13 @@ def main():
             # Format columns for display
             display_df = filtered_df.copy()
             currency_format_cols = ['Assets Q1-2025', 'Loans Q1 - 2025', 
-                                   'Deposits Q1 - 2025', 'Equity Capital Q1-2025']
+                                      'Deposits Q1 - 2025', 'Equity Capital Q1-2025']
             for col in currency_format_cols:
                 if col in display_df.columns:
                     display_df[col] = display_df[col].apply(lambda x: f"${x:,.0f}")
             
             percentage_format_cols = ['Capital Adequacy Ratio', 'Asset Growth', 
-                                     'Return on Assets - YTD', 'Delinquency Ratio']
+                                        'Return on Assets - YTD', 'Delinquency Ratio']
             for col in percentage_format_cols:
                 if col in display_df.columns:
                     display_df[col] = display_df[col].apply(lambda x: f"{x:.2f}%")
@@ -516,15 +516,15 @@ def main():
             # Display with conditional formatting
             st.dataframe(
                 display_df[['Credit Union', 'Assets Q1-2025', 'Health Score', 
-                          'Risk Category', 'Capital Adequacy Ratio', 
-                          'Return on Assets - YTD', 'Asset Growth']],
+                              'Risk Category', 'Capital Adequacy Ratio', 
+                              'Return on Assets - YTD', 'Asset Growth']],
                 use_container_width=True,
                 height=400
             )
             
             # Peer Analysis
             st.markdown("---")
-            st.header("🎯 Peer Analysis Tool")
+            st.header("Peer Analysis Tool")
             
             selected_cu = st.selectbox(
                 "Select a Credit Union to Analyze",
@@ -553,7 +553,7 @@ def main():
                     )
                     peer_group = filtered_df[
                         (filtered_df['Assets Q1-2025'].between(peer_asset_range[0], 
-                                                               peer_asset_range[1])) &
+                                                                peer_asset_range[1])) &
                         (filtered_df['Credit Union'] != selected_cu)
                     ]
                 
@@ -577,7 +577,7 @@ def main():
                     peer_group = filtered_df[filtered_df['Credit Union'].isin(selected_peers)]
                 
                 if not peer_group.empty:
-                    st.info(f"📊 Comparing with {len(peer_group)} peer credit unions")
+                    st.info(f"Comparing with {len(peer_group)} peer credit unions")
                     
                     # Comparison metrics
                     metrics_to_compare = [
@@ -652,7 +652,7 @@ def main():
             st.warning("No credit unions match the current filter criteria.")
     
     with tab2:
-        st.header("🔮 Scenario Planning & Advisor")
+        st.header("Scenario Planning & Advisor")
         
         if not filtered_df.empty:
             selected_cu_scenario = st.selectbox(
@@ -668,7 +668,7 @@ def main():
                 st.info(f"Current Health Score: **{current_data['Health Score']:.0f}** ({current_data['Risk Category']})")
                 
                 # Scenario input columns
-                st.subheader("📝 Adjust Projected Values")
+                st.subheader("Adjust Projected Values")
                 
                 col1, col2, col3 = st.columns(3)
                 
@@ -738,11 +738,11 @@ def main():
                 projected = {
                     'Capital Adequacy Ratio': (proj_equity / proj_assets * 100) if proj_assets else 0,
                     'Asset Growth': ((proj_assets - current_data['Assets Q1-2025']) / 
-                                   current_data['Assets Q1-2025'] * 100) if current_data['Assets Q1-2025'] else 0,
+                                     current_data['Assets Q1-2025'] * 100) if current_data['Assets Q1-2025'] else 0,
                     'Loan Growth': ((proj_loans - current_data['Loans Q1 - 2025']) / 
-                                  current_data['Loans Q1 - 2025'] * 100) if current_data['Loans Q1 - 2025'] else 0,
+                                    current_data['Loans Q1 - 2025'] * 100) if current_data['Loans Q1 - 2025'] else 0,
                     'Deposit Growth': ((proj_deposits - current_data['Deposits Q1 - 2025']) / 
-                                     current_data['Deposits Q1 - 2025'] * 100) if current_data['Deposits Q1 - 2025'] else 0,
+                                       current_data['Deposits Q1 - 2025'] * 100) if current_data['Deposits Q1 - 2025'] else 0,
                     'Delinquency Ratio': ((proj_unbacked_loans + proj_reo) / proj_assets * 100) if proj_assets else 0,
                     'Return on Assets - YTD': proj_roa,
                     'Assets per Employee': (proj_assets / proj_employees) if proj_employees else 0,
@@ -756,7 +756,7 @@ def main():
                 
                 # Display results
                 st.markdown("---")
-                st.header("📊 Scenario Analysis Results")
+                st.header("Scenario Analysis Results")
                 
                 # Score comparison
                 col1, col2, col3 = st.columns(3)
@@ -795,7 +795,7 @@ def main():
                 
                 metrics_comparison = pd.DataFrame({
                     'Metric': ['Capital Adequacy Ratio', 'Asset Growth', 'Delinquency Ratio', 
-                              'ROA', 'Assets per Employee', 'Loan to Share Ratio'],
+                               'ROA', 'Assets per Employee', 'Loan to Share Ratio'],
                     'Current': [
                         f"{current_data['Capital Adequacy Ratio']:.2f}%",
                         f"{current_data['Asset Growth']:.2f}%",
@@ -832,7 +832,7 @@ def main():
             st.info("Please select credit unions from the Dashboard tab to use the Scenario Advisor.")
     
     with tab3:
-        st.header("📊 Advanced Analytics")
+        st.header("Advanced Analytics")
         
         if not filtered_df.empty:
             analysis_type = st.selectbox(
@@ -883,7 +883,7 @@ def main():
                 st.subheader("Correlation Matrix")
                 
                 corr_metrics = ['Health Score', 'Capital Adequacy Ratio', 'Asset Growth',
-                              'Return on Assets - YTD', 'Delinquency Ratio', 'Loan Growth']
+                                'Return on Assets - YTD', 'Delinquency Ratio', 'Loan Growth']
                 
                 corr_matrix = filtered_df[corr_metrics].corr()
                 
@@ -972,9 +972,9 @@ def main():
                 
                 # Add quadrant lines
                 fig.add_hline(y=BENCHMARKS['delinquency_warning'], line_dash="dash", 
-                            line_color="yellow", annotation_text="Warning Level")
+                              line_color="yellow", annotation_text="Warning Level")
                 fig.add_vline(x=BENCHMARKS['capital_adequacy_min'], line_dash="dash",
-                            line_color="yellow", annotation_text="Min Capital")
+                              line_color="yellow", annotation_text="Min Capital")
                 
                 fig.update_layout(
                     paper_bgcolor='rgba(0,0,0,0)',
@@ -995,17 +995,17 @@ def main():
                     st.warning(f"⚠️ {len(at_risk)} credit unions are in high-risk zones")
                     st.dataframe(
                         at_risk[['Credit Union', 'Capital Adequacy Ratio', 
-                               'Delinquency Ratio', 'Health Score']],
+                                 'Delinquency Ratio', 'Health Score']],
                         use_container_width=True
                     )
         else:
             st.info("Please select credit unions from the Dashboard tab to view analytics.")
     
     with tab4:
-        st.header("📚 Guide & Metric Definitions")
+        st.header("Guide & Metric Definitions")
         
         # Create expandable sections for better organization
-        with st.expander("🎯 Quick Start Guide", expanded=True):
+        with st.expander("Quick Start Guide", expanded=True):
             st.markdown("""
             ### How to Use This Dashboard
             
@@ -1021,7 +1021,7 @@ def main():
             - **Risk Assessment**: Identify and monitor at-risk institutions
             """)
         
-        with st.expander("📊 Core Metrics", expanded=False):
+        with st.expander("Core Metrics", expanded=False):
             st.markdown(f"""
             ### Health & Capital Metrics
             
@@ -1046,7 +1046,7 @@ def main():
             - Target: 10% or higher indicates strong performance
             """)
         
-        with st.expander("📈 Growth & Efficiency Metrics", expanded=False):
+        with st.expander("Growth & Efficiency Metrics", expanded=False):
             st.markdown(f"""
             ### Growth Indicators
             
@@ -1074,7 +1074,7 @@ def main():
             - Strong performance: >{BENCHMARKS['loan_share_ratio_strong']}%
             """)
         
-        with st.expander("⚠️ Risk Metrics", expanded=False):
+        with st.expander("Risk Metrics", expanded=False):
             st.markdown(f"""
             ### Credit Risk Indicators
             
@@ -1098,7 +1098,7 @@ def main():
             - **Critical (<40)**: Immediate attention required
             """)
         
-        with st.expander("📖 Data Sources & Methodology", expanded=False):
+        with st.expander("Data Sources & Methodology", expanded=False):
             st.markdown("""
             ### Data Sources
             - Primary data from NCUA quarterly call reports
@@ -1126,7 +1126,7 @@ def main():
         st.markdown("---")
         st.markdown("""
             <div style='background: rgba(99,102,241,0.05); padding: 1.5rem; border-radius: 12px; 
-                        border: 1px solid rgba(99,102,241,0.2);'>
+                         border: 1px solid rgba(99,102,241,0.2);'>
                 <p style='color: #e2e8f0; margin: 0; font-size: 0.95rem;'>
                     <strong>Professional Tip:</strong> Leverage the scenario planning module to model strategic 
                     decisions before implementation. This platform provides institutional-grade analytics 
@@ -1137,7 +1137,7 @@ def main():
         
         st.markdown("""
             <div style='background: rgba(245,158,11,0.05); padding: 1.5rem; border-radius: 12px; 
-                        border: 1px solid rgba(245,158,11,0.2); margin-top: 1rem;'>
+                         border: 1px solid rgba(245,158,11,0.2); margin-top: 1rem;'>
                 <p style='color: #e2e8f0; margin: 0; font-size: 0.9rem;'>
                     <strong>Legal Disclaimer:</strong> This analytical platform provides data-driven insights 
                     for informational purposes only. All strategic decisions should be validated with 
